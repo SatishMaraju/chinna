@@ -1,0 +1,122 @@
+1) STRING COPY
+
+
+1) string constant as destination and string variable as source
+
+1_str-cpy.c: In function ‘myownstrcpy’:
+1_str-cpy.c:35:10: error: assignment of read-only location ‘*(ptr + (sizetype)i)’
+    ptr[i]=ptr1[i];
+          ^
+1_str-cpy.c:38:8: error: assignment of read-only location ‘*(ptr + (sizetype)i)’
+  ptr[i]='\0';
+        ^
+
+
+2) string variable as destination and string constant as source
+Enter the contents of d  str:masters
+Enter the s string:
+kernel
+The destination string is : kernel
+
+
+3) string variable as destination and string variable as source
+Enter the contents of d  str:masters
+Enter the s string:
+kernel
+The destination string is : kernel
+
+
+4) string constant as destination and string constant as source
+1_str-cpy.c: In function ‘myownstrcpy’:
+1_str-cpy.c:35:10: error: assignment of read-only location ‘*(ptr + (sizetype)i)’
+    ptr[i]=ptr1[i];
+          ^
+1_str-cpy.c:38:8: error: assignment of read-only location ‘*(ptr + (sizetype)i)’
+  ptr[i]='\0';
+
+*****************************************************************************************************************************************************************************************************
+
+2) STRING COMPARE
+
+kernel
+kernel
+Both Strings are equal
+km@KernelMasters:~/KM_GITLAB/km52aesd30/Advanced-c/char-pointer-applications$ ./a.out
+kernel
+kerven
+Both Strings are not equal
+
+
+*****************************************************************************************************************************************************************************************************
+
+3) STRING CONCATENATION
+
+
+1) string constant as destination and string variable as source
+
+3_str-cat.c: In function ‘mystrcat’:
+3_str-cat.c:31:9: error: assignment of read-only location ‘*(d + (sizetype)n)’
+   *(d+n)=*(s+i);
+         ^
+3_str-cat.c:35:8: error: assignment of read-only location ‘*(d + (sizetype)n)’
+  *(d+n)='\0';
+        ^
+3_str-cat.c:36:8: warning: return discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+ return d;
+
+
+2) string variable as destination and string constant as source
+Input : masters
+kernel
+output masterskernel
+
+
+3) string variable as destination and string variable as source
+Input : masters
+kernel
+output masterskernel
+
+
+
+4) string constant as destination and string constant as source
+
+3_str-cat.c: In function ‘mystrcat’:
+3_str-cat.c:31:9: error: assignment of read-only location ‘*(d + (sizetype)n)’
+   *(d+n)=*(s+i);
+         ^
+3_str-cat.c:35:8: error: assignment of read-only location ‘*(d + (sizetype)n)’
+  *(d+n)='\0';
+        ^
+3_str-cat.c:36:8: warning: return discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+ return d;
+        ^
+
+****************************************************************************************************************************************************************************************************
+
+5) STRING REVERSE
+
+
+
+2) string constant   
+
+5_str-rev.c: In function ‘mystrrev’:
+5_str-rev.c:28:12: error: assignment of read-only location ‘*(str + (sizetype)i)’
+    *(str+i)=*(str+(l-1));
+            ^
+5_str-rev.c:29:16: error: assignment of read-only location ‘*(str + ((sizetype)l + 18446744073709551615))’
+    *(str+(l-1))=temp;
+                ^
+5_str-rev.c:32:10: warning: return discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+   return str;
+          ^~~
+~                    
+
+1)string variable
+
+input: kernel
+output: lenrek
+
+
+****************************************************************************************************************************************************************************************************
+
+

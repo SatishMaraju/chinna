@@ -1,0 +1,51 @@
+Q. Interface a 1.8 inch Color SPI TFT module (ST7735) with an STM32F401RBT6 controller.
+
+sol:	1. Here the first thiing we need to observe is that the SPI in STM32F401RBT6 is connected to ST7735 TFT LCD.For that we need to create a program in HAL based on SPI protocol 			requirements using STM32 CubeMX (STM32F401RBT6 is connected to ST7735 TFT LCD through SPI).
+	
+	2. The ST7735 TFT LCD is connected to SPI like below.
+		i). LED :: Backlight -> Connect to 3.3V
+		ii). SCK :: Serial clock input -> connect to SPI SCK pin
+		iii). SDA :: Serial data input -> Connect to SPI MOSI pin
+		iv). DC :: Data/Command selection -> Connect to PA9
+		v). RESET :: Reset -> Connect to PC7
+		vi). CS :: Chip Select -> Connect to PB6
+		vii). GND :: Ground -> GND
+		viii). VCC :: Power Supply -> 3.3V
+
+	3. We need to download ST7735 driver code in google.(font.c,font.h,st7735.h,st7735.c,GFX_FUNCTIONS.h and GFX_FUNCTIONS.c)
+	
+	4. Here DC is Connected to SPI1 DC at GPIOA 0,RST at GPIOA 1 and CS at GPIOA 4.
+
+	5. After that attach those .c and .h files which are acquired from ST7735 driver (like .c files attached in arc and .h files in inc).
+
+	6. In HAL main program,we need to include the below
+		ST7735_SetRotation(0);
+  		ST7735_WriteString(x-axis, y-axis, "KERNEL MASTERS", Font_11x18, RED,BLACK);
+  		HAL_Delay(1000);
+  		fillScreen(BLACK);
+	
+	7. If we want to change the font then we have to change the resolution like below.
+		extern FontDef Font_7x10; // small size text
+		extern FontDef Font_11x18;  //medium size text
+		extern FontDef Font_16x26;  //large size text
+
+	8. If we want to change the colours then we have to make changes in below.
+		ST7735_WriteString( , , , ,colour,colour);
+
+	9. If we want to rotate the screen for printing, make changes in below function call like
+		ST7735_SetRotation(0);
+		---> 0 indicates the up-side of display.
+		---> 1 indicates the right-side of display.
+		---> 2 indicates the down-side of display.
+		---> 3 indicates the left-side of display.
+	
+	10. If we want to change the screen background colour, we have to make changes like
+		fillScreen(colour);
+		in colour--we have to mention the colour name.
+
+ISSUES: 1. The DC pin is not mentioned, for that i'm not included DC pin.
+	sol: We arrange The GPIOA pin 0.
+	2. Some files are missed while adding.
+	sol: Make sure that all the .c files are attached at src and .h files in inc.
+	3. I'm not getting the output.
+	sol: for that i have checked the rayanmini datasheets to know the pins which are connected to the TFT_LCD through SPI.	

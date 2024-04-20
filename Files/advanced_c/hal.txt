@@ -1,0 +1,196 @@
+##DATE:03/01/2024               TOPIC:SEARCHING FOR ADVANCED C TOPICS
+
+
+************************************************************************  pointer arithmetic  ****************************************************************************************************
+
+#define APB1PERIPH_BASE       PERIPH_BASE
+#define APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
+#define AHB1PERIPH_BASE       (PERIPH_BASE + 0x00020000UL)
+#define AHB2PERIPH_BASE       (PERIPH_BASE + 0x10000000UL)
+
+SOL:the base address is adding with some external address and is given to the macro.
+
+#define TIM1_BASE             (APB2PERIPH_BASE + 0x0000UL)
+#define USART1_BASE           (APB2PERIPH_BASE + 0x1000UL)
+#define USART6_BASE           (APB2PERIPH_BASE + 0x1400UL)
+#define ADC1_BASE             (APB2PERIPH_BASE + 0x2000UL)
+#define ADC1_COMMON_BASE      (APB2PERIPH_BASE + 0x2300UL)
+
+sol:The address is adding and the value is assigned to the  macro.
+
+#define ADC_BASE               ADC1_COMMON_BASE
+#define SDIO_BASE             (APB2PERIPH_BASE + 0x2C00UL)
+#define SPI1_BASE             (APB2PERIPH_BASE + 0x3000UL)
+#define SPI4_BASE             (APB2PERIPH_BASE + 0x3400UL)
+#define SYSCFG_BASE           (APB2PERIPH_BASE + 0x3800UL)
+#define EXTI_BASE             (APB2PERIPH_BASE + 0x3C00UL)
+#define TIM9_BASE             (APB2PERIPH_BASE + 0x4000UL)
+#define TIM10_BASE            (APB2PERIPH_BASE + 0x4400UL)
+#define TIM11_BASE            (APB2PERIPH_BASE + 0x4800UL)
+
+
+
+
+****************************************************************** preprocessor directivess-conditional compilation *****************************************************************************
+
+#if defined(USE_FULL_LL_DRIVER)
+
+/* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx_ll_adc.h"
+#include "stm32f4xx_ll_bus.h"
+
+#ifdef  USE_FULL_ASSERT
+#include "stm32_assert.h"
+#else
+#define assert_param(expr) ((void)0U)
+#endif
+
+sol: if USE_FULL_LL_DRIVER is defined then include all the header files.
+
+#ifndef __STM32F4xx_HAL_I2C_H
+#define __STM32F4xx_HAL_I2C_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+sol: if  __STM32F4xx_HAL_I2C_H is not defined then include these.
+
+
+ #if (USE_HAL_I2C_REGISTER_CALLBACKS == 1)
+#define __HAL_I2C_RESET_HANDLE_STATE(__HANDLE__)                do{                                                   \
+                                                                    (__HANDLE__)->State = HAL_I2C_STATE_RESET;       \
+                                                                    (__HANDLE__)->MspInitCallback = NULL;            \
+                                                                    (__HANDLE__)->MspDeInitCallback = NULL;          \
+                                                                  } while(0)
+#else
+#define __HAL_I2C_RESET_HANDLE_STATE(__HANDLE__)                ((__HANDLE__)->State = HAL_I2C_STATE_RESET)
+#endif
+
+
+
+
+************************************************************************  function pointers ***************************************************************************************************
+
+TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
+
+  /* Enable the Peripheral, except in trigger mode where enable is automatically done with trigger */
+  if (IS_TIM_SLAVE_INSTANCE(htim->Instance))
+  {
+    tmpsmcr = htim->Instance->SMCR & TIM_SMCR_SMS;
+    if (!IS_TIM_SLAVEMODE_TRIGGER_ENABLED(tmpsmcr))
+    {
+      __HAL_TIM_ENABLE(htim);
+    }
+  }
+  else
+  {
+    __HAL_TIM_ENABLE(htim);
+  }
+
+  /* Return function status */
+  return HAL_OK;
+}
+
+sol:
+
+htim->Instance
+htim->State = HAL_TIM_STATE_READY;
+
+if (IS_TIM_SLAVE_INSTANCE(htim->Instance))
+  {
+    tmpsmcr = htim->Instance->SMCR & TIM_SMCR_SMS;
+    if (!IS_TIM_SLAVEMODE_TRIGGER_ENABLED(tmpsmcr))
+    {
+      __HAL_TIM_ENABLE(htim);
+    }
+  }
+  else
+  {
+    __HAL_TIM_ENABLE(htim);
+  }   lin no; 350 in hal_timer_ex.c
+
+sol:The function pointer is taken as the argument and check the conditions.
+
+
+***************************************************************************************  structures  *************************************************************************************************
+
+
+typedef struct
+{
+  __IO uint32_t CSR;    /*!< ADC Common status register,                  Address offset: ADC1 base address + 0x300 */
+  __IO uint32_t CCR;    /*!< ADC common control register,                 Address offset: ADC1 base address + 0x304 */
+  __IO uint32_t CDR;    /*!< ADC common regular data register for dual
+                             AND triple modes,                            Address offset: ADC1 base address + 0x308 */
+} ADC_Common_TypeDef;
+
+sol: structure have elements CSR,CCR,CDR and ADC_Common_TypeDef is a type of this structure;
+
+
+
+typedef struct
+{
+  __IO uint32_t CR;   /*!< WWDG Control register,       Address offset: 0x00 */
+  __IO uint32_t CFR;  /*!< WWDG Configuration register, Address offset: 0x04 */
+  __IO uint32_t SR;   /*!< WWDG Status register,        Address offset: 0x08 */
+} WWDG_TypeDef;
+
+sol:structure have elements CR,CFR,SR and WWDG_TypeDef is a type of this structure;
+
+
+
+typedef struct
+{
+  __IO uint32_t MEMRMP;       /*!< SYSCFG memory remap register,                      Address offset: 0x00      */
+  __IO uint32_t PMC;          /*!< SYSCFG peripheral mode configuration register,     Address offset: 0x04      */
+  __IO uint32_t EXTICR[4];    /*!< SYSCFG external interrupt configuration registers, Address offset: 0x08-0x14 */
+  uint32_t      RESERVED[2];  /*!< Reserved, 0x18-0x1C                                                          */
+  __IO uint32_t CMPCR;        /*!< SYSCFG Compensation cell control register,         Address offset: 0x20      */
+} SYSCFG_TypeDef;
+
+sol: structure have elements MEMRMP,PMC, EXTICR[4], RESERVED[2], CMPCR. AND SYSCFG_TypeDef is a type of this structure.
+
+
+**************************************************************************  constant pointers *************************************************************************************************
+
+
+
+AL_StatusTypeDef HAL_TIM_Base_Start_DMA(TIM_HandleTypeDef *htim, const uint32_t *pData, uint16_t Length)
+{
+  uint32_t tmpsmcr;
+
+  /* Check the parameters */
+  assert_param(IS_TIM_DMA_INSTANCE(htim->Instance));
+
+  /* Set the TIM state */
+  if (htim->State == HAL_TIM_STATE_BUSY)
+  {
+    return HAL_BUSY;
+  }
+  else if (htim->State == HAL_TIM_STATE_READY)
+  {
+    if ((pData == NULL) || (Length == 0U))
+    {
+      return HAL_ERROR;
+    }
+    else
+    {
+      htim->State = HAL_TIM_STATE_BUSY;
+    }
+  }
+  else
+  {
+    return HAL_ERROR;
+  }
+ line no; 526 in hal_time.c
+
+sol:It checks the conditions and during the process the value is stored in pointer.
+
+
+
+
+HAL_StatusTypeDef HAL_TIM_OC_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel, const uint32_t *pData,
+                                       uint16_t Length)
+
+sol:The arguements are of type constant pointers.
+

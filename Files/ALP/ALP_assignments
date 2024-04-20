@@ -1,0 +1,216 @@
+//Write an ALP to Add the contents of memory locations 4000H and 4001H and place the result in memory location 4002H.
+
+LHLD 4000h
+MOV A H
+ADD L
+STA 4002h
+
+
+//Write an ALP to find the 2’s complement of a number and load number from 4000H memory location the result stored in 6000H.
+
+LDA 4000h
+CMA
+ADI 01h
+STA 6000h
+
+
+//LDA 4000h
+MVI B 01h
+ANA B
+JZ LABEL
+MVI A 11h
+STA 6000h
+HLT
+LABEL: MVI A 22h
+STA 6000h
+HLT
+
+//Write an ALP to perform multiplication of two numbers without using MUL instruction first & second number stored in 4000H & 4001H memory locations respectively and the result stored in 6000H?
+
+LXI H 4001h
+MOV B M
+LXI H 4000h
+MOV C M
+LABEL: ADD C
+DCR B
+JNZ LABEL
+STA 4002h
+
+
+//Write an ALP to perform division of two numbers without using DIV instruction first & second number stored in 4000H & 4001H memory locations respectively and the result stored in 6000H?
+
+LDA 4001h
+MOV B A
+LDA 4000h
+LABEL: INR C
+SUB B
+JP LABEL
+DCR C
+MOV A C
+STA 5000h
+
+
+//Write an ALP average of 5 numbers, take the numbers from 4000H to 4004H location and store the result in 4005H?
+
+LXI H 4000h
+MVI D 05h
+LABEL: ADD M
+INR L
+DCR D
+JNZ LABEL
+MVI B 05h 
+LABEL2: INR C
+SUB B
+JNZ LABEL2
+MOV A C
+STA 6000h
+
+
+//Write an ALP to blink LED every 100 msec delay. Implement delay subroutine and use CALL instruction.
+
+
+LXI SP E358h
+LABEL2: MVI A 01h
+OUT 01h
+CALL LABEL1
+MVI A 00h
+OUT 01h
+CALL LABEL1
+JMP LABEL2
+HLT
+LABEL1: MVI C 4Bh
+LABEL3: NOP
+DCR C
+JNZ LABEL3
+RET
+HLT
+
+
+//Write an ALP if there is no PUSH instruction and implement the same with two instructions which perform the same operation as PUSH B?
+
+
+LXI SP E358h
+LXI B 1234h
+MOV A B
+DCX SP
+STA E357h
+MOV A C
+DCX SP
+STA E356h
+HLT
+
+
+//Write an ALP to find the biggest of 3 numbers. And load numbers from 4000H to 4002H and store the biggest number in 6000H.
+
+
+LDA 4000h
+LHLD 4001h
+CMP H
+JM L1
+CMP L
+JM L2
+STA 6000h
+HLT
+L1: MOV A H
+CMP L
+JM L2
+STA 6000h
+HLT
+L2: MOV A L
+STA 6000h
+HLT
+
+
+//Write an ALP to find the given number is positive or negative. And load number from 4000H and store 11H if number is Negative in 6000H otherwise store 22H in 6000H.
+
+
+LDA 4000h
+RAL
+JNZ LABEL
+MVI A 11h
+STA 6000h
+LABEL: MVI A 22h
+STA 6000h
+
+
+//Store/write 8 bit data 0x12 into 4000H memory location.
+
+MVI B 12h
+LXI H 6000h
+MOV M B
+
+
+LXI H 6000h
+MVI M 12h
+
+
+MVI A 12h
+STA 6000h
+
+
+LXI B 6000h
+MVI A 12h
+STAX B
+
+
+//Load 8 bit data from 4000H memory location into Accumulator
+
+LDA 4000h
+
+
+LXI B 4000h
+LDAX B
+
+
+LXI H 4000h
+MOV A M
+
+//Store 16 bit data 0x1234 into 4000H and 4001H corresponding memory locations using Little Endian format.
+
+
+LXI H 1234h
+SHLD 6000h
+
+
+LXI H 6000h
+MVI B 34h
+MOV M B
+LXI H 6001h
+MVI B 12h
+MOV M B
+
+
+LXI H 4000h
+MVI M 34h
+LXI H 4001h
+MVI M 12h
+
+
+MVI A 34h
+STA 4000h
+MVI A 12h
+STA 4001h
+
+MVI A 34h
+LXI B 4000h
+STAX B
+MVI A 12h
+LXI B 4001h
+STAX B
+
+
+//Load 16 bit data from 4000H & 4001H memory locations into HL pair using Little Endian format.
+
+
+LDA 4000h
+MOV L A
+LDA 4001h
+MOV H A
+
+
+LXI H 4000h
+MOV A H
+LXI H 4001h
+MOV A H
+
+LHLD 4000h
